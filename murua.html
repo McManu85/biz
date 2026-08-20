@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Operación Murua · Mcveras S.L.</title>
+<meta name="theme-color" content="#16241F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 430 258'%3E%3Cg fill='none' stroke='%23B8862B' stroke-width='16' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 110 L140 10 L270 110'/%3E%3Cpath d='M160 110 L292 10 L422 110'/%3E%3Cpath d='M8 110 V248 H64'/%3E%3Cpath d='M422 110 V248 H366'/%3E%3Cpath d='M160 110 V248 H270 V110'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#E6E7E0;
+  --stone-2:#DDDFD6;
+  --ink:#16241F;
+  --ink-soft:#3E4E47;
+  --pine:#1F3A31;
+  --brass:#B8862B;
+  --sage:#5F8A6E;
+  --clay:#9C4A34;
+  --line:rgba(22,36,31,.14);
+  --nav-h:60px;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);background:var(--stone);color:var(--ink);
+  font-size:16px;line-height:1.5;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:0 20px}
+
+
+/* ---------- marca ---------- */
+.brand{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+.brand svg{width:56px;height:auto;flex:none;color:var(--brass)}
+.brand-txt{font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:.02em;color:var(--stone);line-height:1.05}
+.brand-txt span{display:block;font-family:var(--mono);font-size:9.5px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-top:3px}
+.mark-foot{display:flex;align-items:center;gap:11px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(230,231,224,.15)}
+.mark-foot svg{width:34px;height:auto;flex:none;color:var(--brass)}
+.mark-foot b{font-family:var(--display);font-size:14px;font-weight:700;color:var(--stone)}
+.mark-foot b span{display:block;font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:.16em;color:rgba(230,231,224,.55);text-transform:uppercase;margin-top:2px}
+
+/* ---------- cabecera ---------- */
+header{background:var(--pine);color:var(--stone);padding:34px 0 30px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:linear-gradient(90deg,transparent,var(--brass),transparent)}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin-bottom:14px}
+h1{font-family:var(--display);font-size:clamp(34px,10vw,46px);line-height:.94;font-weight:800;letter-spacing:-.02em}
+h1 em{font-style:normal;display:block;color:var(--brass)}
+.sub{margin-top:14px;font-size:14.5px;color:rgba(230,231,224,.72);max-width:34ch}
+
+/* ---------- barra del margen (signature) ---------- */
+.gap{margin-top:30px}
+.gap-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:9px}
+.gap-lab{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,231,224,.55)}
+.gap-num{font-family:var(--display);font-size:21px;font-weight:700;line-height:1}
+.gap-num.buy{color:var(--stone)}
+.gap-num.top{color:var(--brass)}
+.track{height:38px;border-radius:3px;overflow:hidden;display:flex;background:rgba(0,0,0,.22);position:relative}
+.zone-loss{width:18.9%;background:#7E3B2A;opacity:.9}
+.zone-gain{flex:1;background:linear-gradient(90deg,var(--sage),var(--brass))}
+.mark{position:absolute;top:0;bottom:0;left:18.9%;width:2px;background:var(--stone)}
+.mark::after{content:"";position:absolute;top:-4px;left:-3px;width:8px;height:8px;background:var(--stone);transform:rotate(45deg)}
+.gap-foot{display:flex;justify-content:space-between;margin-top:9px;font-family:var(--mono);font-size:10.5px;color:rgba(230,231,224,.6)}
+.gap-note{margin-top:16px;font-size:13.5px;line-height:1.5;color:rgba(230,231,224,.82);border-left:2px solid var(--brass);padding-left:12px}
+.gap-note b{color:var(--stone);font-weight:600}
+
+/* ---------- secciones ---------- */
+section{padding:36px 0 6px;scroll-margin-top:8px}
+.num{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--brass);text-transform:uppercase;margin-bottom:7px}
+h2{font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:-.015em;line-height:1.08;margin-bottom:14px}
+h3{font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.01em;margin:22px 0 8px;color:var(--pine)}
+p{font-size:15px;margin-bottom:13px;color:var(--ink-soft)}
+p strong{color:var(--ink);font-weight:600}
+.lede{font-size:16.5px;color:var(--ink)}
+
+.rule{height:1px;background:var(--line);margin:34px 0 0}
+
+/* ---------- listas de datos ---------- */
+.rows{border-top:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row dt{font-size:14px;color:var(--ink-soft)}
+.row dd{font-family:var(--mono);font-size:13.5px;font-weight:500;white-space:nowrap}
+.row.sum{background:rgba(31,58,49,.05);padding-left:10px;padding-right:10px;margin:0 -10px;border-bottom:1px solid var(--line)}
+.row.sum dt{font-weight:600;color:var(--ink)}
+.row.sum dd{font-weight:600}
+.row.hi dd{color:var(--brass);font-weight:600;font-size:15px}
+
+/* ---------- pasos ---------- */
+.steps{counter-reset:s;margin:6px 0 4px}
+.step{position:relative;padding-left:34px;margin-bottom:15px}
+.step::before{
+  counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;
+  width:22px;height:22px;border-radius:50%;background:var(--pine);color:var(--stone);
+  font-family:var(--mono);font-size:11px;display:grid;place-items:center;font-weight:500;
+}
+.step b{display:block;font-size:14.5px;color:var(--ink);font-weight:600;margin-bottom:1px}
+.step span{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+
+/* ---------- calculadora ---------- */
+.calc{background:var(--pine);color:var(--stone);border-radius:5px;padding:22px 18px;margin-top:4px}
+.calc-lab{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(230,231,224,.55);margin-bottom:6px}
+.calc-price{font-family:var(--display);font-size:36px;font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--stone)}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:32px;background:transparent;margin:14px 0 4px;
+}
+input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:3px;background:rgba(230,231,224,.22)}
+input[type=range]::-moz-range-track{height:5px;border-radius:3px;background:rgba(230,231,224,.22)}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--brass);
+  border:3px solid var(--pine);margin-top:-12px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.35);
+}
+input[type=range]::-moz-range-thumb{
+  width:22px;height:22px;border-radius:50%;background:var(--brass);border:3px solid var(--pine);cursor:pointer;
+}
+input[type=range]:focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:4px}
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:rgba(230,231,224,.5);margin-bottom:16px}
+.readout{border-top:1px solid rgba(230,231,224,.16);padding-top:15px}
+.big{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:13px}
+.big-val{font-family:var(--display);font-size:44px;font-weight:800;line-height:.9;letter-spacing:-.025em;color:var(--brass);font-variant-numeric:tabular-nums}
+.big-val.neg{color:#E08A72}
+.big-cap{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(230,231,224,.55);text-align:right;line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(230,231,224,.16);border:1px solid rgba(230,231,224,.16);border-radius:3px;overflow:hidden}
+.cell{background:var(--pine);padding:11px 12px}
+.cell dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(230,231,224,.55);margin-bottom:4px}
+.cell dd{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--stone);font-variant-numeric:tabular-nums}
+.flag{margin-top:13px;font-size:13px;line-height:1.45;padding:10px 12px;border-radius:3px;background:rgba(95,138,110,.2);border-left:2px solid var(--sage);color:rgba(230,231,224,.9)}
+.flag.warn{background:rgba(156,74,52,.24);border-left-color:#E08A72}
+.flag b{font-weight:600;color:var(--stone)}
+
+/* ---------- tabla escenarios ---------- */
+.scen{margin-top:22px;border-top:1px solid var(--line)}
+.scen-row{display:flex;align-items:center;gap:12px;padding:11px 8px;border-bottom:1px solid var(--line);background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.scen-row:hover,.scen-row:focus-visible{background:rgba(31,58,49,.06);outline:none}
+.scen-row[aria-current=true]{background:rgba(184,134,43,.14)}
+.scen-name{font-size:14px;font-weight:500;flex:1;min-width:0}
+.scen-name small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400}
+.scen-eur{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);flex:none;white-space:nowrap}
+.scen-pct{font-family:var(--display);font-size:18px;font-weight:700;color:var(--brass);min-width:62px;text-align:right;font-variant-numeric:tabular-nums}
+.hint{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:10px;letter-spacing:.02em}
+
+/* ---------- estructura ---------- */
+.party{border:1px solid var(--line);border-radius:4px;padding:14px 15px;margin-bottom:10px;background:rgba(255,255,255,.4)}
+.party b{font-family:var(--display);font-size:15px;display:block;margin-bottom:4px}
+.party span{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+.split{display:flex;height:34px;border-radius:3px;overflow:hidden;margin:14px 0 8px;font-family:var(--mono);font-size:11.5px;font-weight:500}
+.split div{display:grid;place-items:center;color:var(--stone)}
+.split .a{width:34%;background:var(--pine)}
+.split .b{width:66%;background:var(--brass);color:var(--ink)}
+
+/* ---------- cierre ---------- */
+.close{background:var(--pine);color:var(--stone);margin-top:38px;padding:34px 0 38px}
+.close h2{color:var(--stone);font-size:24px}
+.close p{color:rgba(230,231,224,.8);font-size:15px}
+.close .kv{font-family:var(--mono);font-size:13.5px;color:rgba(230,231,224,.9);display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(230,231,224,.15)}
+.close .kv b{color:var(--brass);font-weight:600}
+.foot{font-size:11.5px;color:rgba(230,231,224,.5);margin-top:20px;line-height:1.5;font-family:var(--mono)}
+
+/* ---------- navegación inferior ---------- */
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;height:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(230,231,224,.93);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);display:flex;
+}
+nav a{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  text-decoration:none;color:var(--ink-soft);font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.07em;text-transform:uppercase;-webkit-tap-highlight-color:transparent;
+  border-top:2px solid transparent;transition:color .18s,border-color .18s;
+}
+nav a svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav a[aria-current=true]{color:var(--pine);border-top-color:var(--brass)}
+nav a:focus-visible{outline:2px solid var(--brass);outline-offset:-3px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+@media (min-width:600px){
+  .grid2{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 430 258" role="img" aria-label="McVeras" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 110 L140 6 L272 110"/>
+        <path d="M158 110 L292 6 L424 110"/>
+        <path d="M6 110 V250 H66"/>
+        <path d="M424 110 V250 H364"/>
+        <path d="M158 110 V250 H272 V110"/>
+        <path d="M64 186 V152 A13 13 0 0 1 90 152 V186 M90 152 A13 13 0 0 1 116 152 V186"/>
+        <path d="M330 142 L354 187 L378 142"/>
+      </svg>
+      <div class="brand-txt">McVeras<span>Sociedad patrimonial · Álava</span></div>
+    </div>
+    <h1>Operación<em>Murua</em></h1>
+    <p class="sub">Una vivienda adjudicada en subasta judicial por 71.100 €. Reforma, venta y reparto en 6 meses.</p>
+
+    <div class="gap">
+      <div class="gap-head">
+        <div>
+          <div class="gap-lab">Adjudicación</div>
+          <div class="gap-num buy">71.100 €</div>
+        </div>
+        <div style="text-align:right">
+          <div class="gap-lab">Estimación de mercado</div>
+          <div class="gap-num top">189.000 €</div>
+        </div>
+      </div>
+      <div class="track">
+        <div class="zone-loss"></div>
+        <div class="zone-gain"></div>
+        <div class="mark"></div>
+      </div>
+      <div class="gap-foot">
+        <span>Sin beneficio</span>
+        <span>Punto muerto 93.400 €</span>
+      </div>
+      <p class="gap-note">El punto muerto está en <b>93.400 €</b>, prácticamente la mitad de la estimación. <b>El 81 % del recorrido de precio es zona de beneficio.</b></p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="operacion">
+  <div class="num">01 · La operación</div>
+  <h2>Comprada barata, vendida rápido</h2>
+  <p class="lede">Mcveras se ha adjudicado en subasta judicial una vivienda en Murua (Zigoitia). La casa ya es suya. Lo que falta es el dinero para pagarla.</p>
+
+  <div class="steps">
+    <div class="step"><b>Consignar y escriturar</b><span>76.644 € entre precio de adjudicación, ITP, notaría, registro y gestoría.</span></div>
+    <div class="step"><b>Lavado de cara</b><span>5.550 € de reforma ligera, IVA incluido. Sin obra estructural.</span></div>
+    <div class="step"><b>A la venta de inmediato</b><span>Objetivo: cerrar en 6 meses desde la compra.</span></div>
+    <div class="step"><b>Liquidar y repartir</b><span>Se devuelve el capital íntegro y el remanente se reparte 34 / 66.</span></div>
+  </div>
+  <div class="rule"></div>
+</section>
+
+<section id="fondo">
+  <div class="num">02 · Lo que se pide</div>
+  <h2>Un fondo de 85.000 €</h2>
+  <p>Aportado íntegramente por los inversores. Mcveras aporta el título del inmueble, la gestión de la reforma, la comercialización, la tramitación y la responsabilidad como titular único frente a terceros.</p>
+
+  <h3>Compra</h3>
+  <dl class="rows">
+    <div class="row"><dt>Precio de adjudicación</dt><dd>71.100,00 €</dd></div>
+    <div class="row"><dt>ITP (4 %)</dt><dd>2.844,00 €</dd></div>
+    <div class="row"><dt>Notaría</dt><dd>1.500,00 €</dd></div>
+    <div class="row"><dt>Registro</dt><dd>700,00 €</dd></div>
+    <div class="row"><dt>Gestoría</dt><dd>500,00 €</dd></div>
+    <div class="row sum"><dt>Subtotal compra</dt><dd>76.644,00 €</dd></div>
+  </dl>
+
+  <h3>Reforma y tenencia</h3>
+  <dl class="rows">
+    <div class="row"><dt>Lavado de cara</dt><dd>5.000,00 €</dd></div>
+    <div class="row"><dt>IVA de obra (10 %, no recuperable)</dt><dd>550,00 €</dd></div>
+    <div class="row"><dt>IBI y seguro (anualidad)</dt><dd>800,00 €</dd></div>
+    <div class="row sum"><dt>Coste previsto total</dt><dd>82.994,00 €</dd></div>
+    <div class="row hi"><dt>Fondo solicitado</dt><dd>85.000,00 €</dd></div>
+    <div class="row"><dt>Colchón</dt><dd>2.006,00 €</dd></div>
+  </dl>
+  <p style="margin-top:14px;font-size:13.5px">El IBI y el seguro se devengan por anualidades. Si la venta se alarga más allá del año, la anualidad siguiente se descuenta del beneficio final. No se piden aportaciones adicionales en ningún caso.</p>
+
+  <h3>Gastos de venta</h3>
+  <p style="font-size:13.5px;margin-bottom:10px">Salen del propio precio de venta. Presupuesto para una venta a 160.000 €.</p>
+  <dl class="rows">
+    <div class="row"><dt>Plusvalía municipal — reserva</dt><dd>3.000,00 €</dd></div>
+    <div class="row"><dt>Comisión inmobiliaria (3 % + IVA)</dt><dd>5.808,00 €</dd></div>
+    <div class="row"><dt>Certificados (IVA incl.)</dt><dd>363,00 €</dd></div>
+    <div class="row"><dt>Gestoría de venta (IVA incl.)</dt><dd>605,00 €</dd></div>
+    <div class="row"><dt>Imprevistos</dt><dd>1.000,00 €</dd></div>
+    <div class="row sum"><dt>Total</dt><dd>10.776,00 €</dd></div>
+  </dl>
+  <div class="rule"></div>
+</section>
+
+<section id="retorno">
+  <div class="num">03 · Retorno</div>
+  <h2>Mueve el precio de venta</h2>
+  <p>Todo se recalcula sobre una aportación conjunta de 85.000 €. El capital se recupera antes de repartir un euro de beneficio.</p>
+
+  <div class="calc">
+    <div class="calc-lab">Precio de venta</div>
+    <div class="calc-price" id="price">160.000 €</div>
+    <input type="range" id="slider" min="76000" max="200000" step="1000" value="160000"
+           aria-label="Precio de venta" aria-describedby="price">
+    <div class="scale"><span>76.000</span><span>138.000</span><span>200.000</span></div>
+
+    <div class="readout">
+      <div class="big">
+        <div class="big-val" id="pct">49,9 %</div>
+        <div class="big-cap">Rentabilidad<br>bruta conjunta</div>
+      </div>
+      <dl class="grid2">
+        <div class="cell"><dt>Beneficio inversores</dt><dd id="inv">42.388 €</dd></div>
+        <div class="cell"><dt>Total percibido</dt><dd id="tot">127.388 €</dd></div>
+        <div class="cell"><dt>Anualizado a 6 meses</dt><dd id="a6">124,6 %</dd></div>
+        <div class="cell"><dt>Parte de Mcveras</dt><dd id="mc">21.836 €</dd></div>
+      </dl>
+      <div class="flag" id="flag"><b>Por encima del punto muerto.</b> Los 85.000 € se devuelven íntegros y el beneficio se reparte 34 / 66.</div>
+    </div>
+  </div>
+
+  <div class="scen" role="group" aria-label="Escenarios preajustados">
+    <button class="scen-row" data-p="189000"><span class="scen-name">Optimista<small>Techo estimado</small></span><span class="scen-eur">189.000 €</span><span class="scen-pct">71,6 %</span></button>
+    <button class="scen-row" data-p="160000" aria-current="true"><span class="scen-name">Central<small>El que se usa para decidir</small></span><span class="scen-eur">160.000 €</span><span class="scen-pct">49,9 %</span></button>
+    <button class="scen-row" data-p="150000"><span class="scen-name">Conservador<small>−21 % sobre el techo</small></span><span class="scen-eur">150.000 €</span><span class="scen-pct">42,4 %</span></button>
+    <button class="scen-row" data-p="120000"><span class="scen-name">Pesimista<small>−37 % sobre el techo</small></span><span class="scen-eur">120.000 €</span><span class="scen-pct">19,9 %</span></button>
+  </div>
+  <p class="hint">Toca un escenario o arrastra el control.</p>
+
+  <p style="margin-top:20px;font-size:13.5px">La rentabilidad se reparte a prorrata de lo que aporte cada inversor. Mcveras retiene el 19 % del beneficio en el momento del pago e ingresa la retención en Hacienda, como pago a cuenta del IRPF del inversor.</p>
+  <div class="rule"></div>
+</section>
+
+<section id="estructura">
+  <div class="num">04 · Estructura</div>
+  <h2>Cuentas en participación</h2>
+  <p>Arts. 239-243 del Código de Comercio. Los inversores no figuran en el Registro de la Propiedad ni frente a terceros, y no responden de deudas de la operación más allá de lo aportado.</p>
+
+  <div class="party">
+    <b>Mcveras S.L. — gestor</b>
+    <span>Titular único del inmueble. Compra, escritura, reforma, vende y da la cara frente a terceros.</span>
+  </div>
+  <div class="party">
+    <b>Inversores — partícipes</b>
+    <span>Aportan el fondo de 85.000 € y participan del resultado a prorrata de su aportación.</span>
+  </div>
+
+  <div class="split" aria-label="Reparto del beneficio">
+    <div class="a">34 % Mcveras</div>
+    <div class="b">66 % Inversores</div>
+  </div>
+  <p style="font-size:13.5px">La aportación de Mcveras no es dineraria: es el activo, la gestión y la responsabilidad. Las pérdidas, si las hubiera, se soportan a prorrata y con el límite de la aportación — en ningún caso se puede reclamar al inversor más de lo que puso.</p>
+</section>
+
+</main>
+
+<div class="close">
+  <div class="wrap">
+    <div class="mark-foot">
+      <svg viewBox="0 0 430 258" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 110 L140 6 L272 110"/>
+        <path d="M158 110 L292 6 L424 110"/>
+        <path d="M6 110 V250 H66"/>
+        <path d="M424 110 V250 H364"/>
+        <path d="M158 110 V250 H272 V110"/>
+        <path d="M64 186 V152 A13 13 0 0 1 90 152 V186 M90 152 A13 13 0 0 1 116 152 V186"/>
+        <path d="M330 142 L354 187 L378 142"/>
+      </svg>
+      <b>McVeras S.L.<span>CIF B05393699 · Vitoria-Gasteiz</span></b>
+    </div>
+    <h2>En una línea</h2>
+    <p>Una casa comprada por el 38 % de su valor estimado, con el capital recuperado antes de repartir beneficio y un punto muerto en la mitad del precio de mercado.</p>
+    <div class="kv"><span>Fondo solicitado</span><b>85.000 €</b></div>
+    <div class="kv"><span>Escenario central, 6 meses</span><b>49,9 % bruto</b></div>
+    <div class="kv"><span>Si el mercado acompaña</span><b>71,6 %</b></div>
+    <div class="kv"><span>Vendiendo mal y con prisa</span><b>19,9 %</b></div>
+    <p class="foot">Documento de trabajo para toma de decisiones. Las reservas de plusvalía municipal y comisión de venta se sustituirán por importes reales cuando se disponga del valor catastral del suelo y de las condiciones de comercialización.</p>
+  </div>
+</div>
+
+<nav aria-label="Secciones">
+  <a href="#operacion" data-s="operacion" aria-current="true">
+    <svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>Operación</a>
+  <a href="#fondo" data-s="fondo">
+    <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="13" rx="2"/><path d="M2.5 10.5h19"/></svg>Fondo</a>
+  <a href="#retorno" data-s="retorno">
+    <svg viewBox="0 0 24 24"><path d="M3 17l5.5-6 4 4L21 6"/><path d="M21 11V6h-5"/></svg>Retorno</a>
+  <a href="#estructura" data-s="estructura">
+    <svg viewBox="0 0 24 24"><path d="M12 3v6"/><path d="M5 21v-6"/><path d="M19 21v-6"/><path d="M5 15h14"/><path d="M12 9v6"/></svg>Estructura</a>
+</nav>
+
+<script>
+(function(){
+  "use strict";
+  var CAPITAL = 85000, PART = 0.66, COM = 0.03, IVA = 1.21;
+  var FIJOS = 500*IVA + 300*IVA + 3000 + 1000;      // 4.968 €
+  var BREAKEVEN = (FIJOS + CAPITAL) / (1 - COM*IVA); // 93.356,85 €
+
+  var eur = new Intl.NumberFormat('es-ES',{maximumFractionDigits:0});
+  var pctFmt = new Intl.NumberFormat('es-ES',{minimumFractionDigits:1,maximumFractionDigits:1});
+
+  var el = {
+    slider:  document.getElementById('slider'),
+    price:   document.getElementById('price'),
+    pct:     document.getElementById('pct'),
+    inv:     document.getElementById('inv'),
+    tot:     document.getElementById('tot'),
+    a6:      document.getElementById('a6'),
+    mc:      document.getElementById('mc'),
+    flag:    document.getElementById('flag')
+  };
+
+  function calc(p){
+    var gastos = p*COM*IVA + FIJOS;
+    var ben = p - gastos - CAPITAL;
+    var inv = ben * PART;
+    return { ben: ben, inv: inv, mc: ben*(1-PART), r: inv/CAPITAL };
+  }
+
+  function render(p){
+    var d = calc(p);
+    var neg = d.r < 0;
+    el.price.textContent = eur.format(p) + ' €';
+    el.pct.textContent   = (neg?'':'') + pctFmt.format(d.r*100) + ' %';
+    el.pct.classList.toggle('neg', neg);
+    el.inv.textContent = eur.format(Math.round(d.inv)) + ' €';
+    el.tot.textContent = eur.format(Math.round(CAPITAL + d.inv)) + ' €';
+    el.mc.textContent  = eur.format(Math.round(d.mc)) + ' €';
+    el.a6.textContent  = neg ? '—' : pctFmt.format((Math.pow(1+d.r,2)-1)*100) + ' %';
+
+    if (neg){
+      el.flag.className = 'flag warn';
+      el.flag.innerHTML = '<b>Por debajo del punto muerto.</b> Los inversores recuperarían ' +
+        eur.format(Math.round(CAPITAL + d.inv)) + ' € de los 85.000 € aportados. La pérdida nunca excede la aportación.';
+    } else {
+      el.flag.className = 'flag';
+      el.flag.innerHTML = '<b>Por encima del punto muerto.</b> Los 85.000 € se devuelven íntegros y el beneficio se reparte 34 / 66.';
+    }
+
+    document.querySelectorAll('.scen-row').forEach(function(b){
+      b.setAttribute('aria-current', Number(b.dataset.p) === p ? 'true' : 'false');
+    });
+  }
+
+  el.slider.addEventListener('input', function(){ render(Number(this.value)); });
+
+  document.querySelectorAll('.scen-row').forEach(function(b){
+    b.addEventListener('click', function(){
+      var p = Number(this.dataset.p);
+      el.slider.value = p;
+      render(p);
+    });
+  });
+
+  render(Number(el.slider.value));
+
+  // Navegación: resalta la sección visible
+  var links = {};
+  document.querySelectorAll('nav a').forEach(function(a){ links[a.dataset.s] = a; });
+  var secs = document.querySelectorAll('section[id]');
+
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          Object.keys(links).forEach(function(k){ links[k].setAttribute('aria-current', k === e.target.id ? 'true':'false'); });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    secs.forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
