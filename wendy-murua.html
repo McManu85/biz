@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Operación Murua · Cómo funciona tu inversión</title>
+<meta name="theme-color" content="#16241F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#E6E7E0; --ink:#16241F; --ink-soft:#3E4E47;
+  --pine:#1F3A31; --brass:#B8862B; --sage:#5F8A6E; --clay:#7E3B2A;
+  --line:rgba(22,36,31,.14);
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono','SF Mono',Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--body);background:var(--stone);color:var(--ink);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:24px}
+.wrap{max-width:520px;margin:0 auto;padding:0 20px}
+
+header{background:var(--pine);color:var(--stone);padding:30px 0 26px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:linear-gradient(90deg,transparent,var(--brass),transparent)}
+.brand{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.brand svg{width:38px;height:auto;flex:none;color:var(--brass)}
+.brand-txt{font-family:var(--display);font-size:14px;font-weight:700;line-height:1.05}
+.brand-txt span{display:block;font-family:var(--mono);font-size:8.5px;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:var(--brass);margin-top:2px}
+h1{font-family:var(--display);font-size:clamp(28px,8vw,34px);line-height:1.02;font-weight:800;letter-spacing:-.01em}
+h1 em{font-style:normal;display:block;color:var(--brass);font-size:.72em;margin-top:3px}
+.sub{margin-top:12px;font-size:14.5px;color:rgba(230,231,224,.78);max-width:36ch}
+
+section{padding:28px 0 4px}
+.num{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:7px}
+h2{font-family:var(--display);font-size:21px;font-weight:700;letter-spacing:-.01em;line-height:1.1;margin-bottom:11px}
+p{font-size:15px;margin-bottom:11px;color:var(--ink-soft)}
+p strong{color:var(--ink);font-weight:600}
+.rule{height:1px;background:var(--line);margin:26px 0 0}
+
+/* ---------- calculadora ---------- */
+.calc{background:var(--pine);color:var(--stone);border-radius:5px;padding:22px 18px;margin-top:4px}
+.field{margin-bottom:20px}
+.field:last-of-type{margin-bottom:0}
+.field-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.field-lab{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,231,224,.6)}
+.field-val{font-family:var(--display);font-size:22px;font-weight:800;color:var(--brass);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:transparent;display:block}
+input[type=range]::-webkit-slider-runnable-track{height:5px;border-radius:3px;background:rgba(230,231,224,.22)}
+input[type=range]::-moz-range-track{height:5px;border-radius:3px;background:rgba(230,231,224,.22)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--brass);border:3px solid var(--pine);margin-top:-11px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.35)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--brass);border:3px solid var(--pine);cursor:pointer}
+input[type=range]:focus-visible{outline:2px solid var(--brass);outline-offset:4px;border-radius:4px}
+.scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:rgba(230,231,224,.48);margin-top:5px}
+
+.readout{border-top:1px solid rgba(230,231,224,.16);padding-top:17px;margin-top:4px}
+.rows{width:100%;border-collapse:collapse}
+.rows td{padding:8px 0;border-bottom:1px solid rgba(230,231,224,.13);font-size:13.5px}
+.rows td:first-child{color:rgba(230,231,224,.75)}
+.rows td:last-child{text-align:right;font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums}
+.rows tr.hi td{border-bottom:none;padding-top:12px}
+.rows tr.hi td:first-child{font-family:var(--display);font-size:15px;font-weight:700;color:var(--stone)}
+.rows tr.hi td:last-child{font-family:var(--display);font-size:26px;font-weight:800;color:var(--brass)}
+.rows tr.pct td:last-child{color:var(--brass);font-size:15px;font-weight:600}
+
+.flag{margin-top:14px;font-size:12.5px;line-height:1.45;padding:10px 12px;border-radius:3px;background:rgba(95,138,110,.2);border-left:2px solid var(--sage);color:rgba(230,231,224,.9)}
+.flag.warn{background:rgba(126,59,42,.28);border-left-color:#E08A72}
+.flag b{font-weight:600;color:var(--stone)}
+
+.anual{margin-top:16px}
+.anual-lab{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(230,231,224,.5);margin-bottom:8px}
+.anual-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(230,231,224,.15);border:1px solid rgba(230,231,224,.15);border-radius:3px;overflow:hidden}
+.acell{background:var(--pine);padding:10px 8px;text-align:center}
+.acell dt{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(230,231,224,.5);margin-bottom:5px}
+.acell dd{font-family:var(--display);font-size:16px;font-weight:700;color:var(--stone);font-variant-numeric:tabular-nums}
+.anual-note{margin-top:9px;font-size:11.5px;color:rgba(230,231,224,.55);line-height:1.4}
+
+.quote{margin-top:16px;font-size:13.5px;line-height:1.5;color:var(--ink-soft);border-left:2px solid var(--brass);padding-left:12px}
+.quote b{color:var(--ink)}
+
+footer{margin-top:30px;padding:22px 0 4px;border-top:1px solid var(--line)}
+footer p{font-family:var(--mono);font-size:11px;color:var(--ink-soft);line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 430 258" role="img" aria-label="McVeras" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 110 L140 6 L272 110"/>
+        <path d="M158 110 L292 6 L424 110"/>
+        <path d="M6 110 V250 H66"/>
+        <path d="M424 110 V250 H364"/>
+        <path d="M158 110 V250 H272 V110"/>
+        <path d="M64 186 V152 A13 13 0 0 1 90 152 V186 M90 152 A13 13 0 0 1 116 152 V186"/>
+        <path d="M330 142 L354 187 L378 142"/>
+      </svg>
+      <div class="brand-txt">McVeras<span>Sociedad patrimonial · Álava</span></div>
+    </div>
+    <h1>Operación Murua<em>Cómo funciona tu inversión</em></h1>
+    <p class="sub">Aquí tienes, paso a paso, qué pasa con tu dinero y cuánto vuelve.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="op">
+  <div class="num">01 · La operación, en un párrafo</div>
+  <h2>Se compra, se reforma y se vende</h2>
+  <p>McVeras se ha adjudicado una vivienda en Murua en subasta judicial. La operación es sencilla: <strong>se compra, se hace una reforma ligera y se vende</strong>.</p>
+  <div class="rule"></div>
+</section>
+
+<section id="reparto">
+  <div class="num">02 · Lo que se pide y cómo se reparte</div>
+  <h2>80.000 € entre los inversores</h2>
+  <p>La aportación total pactada es de <strong>80.000 €</strong>, entre los inversores. Estimamos vender la casa por <strong>160.000 €</strong>, aunque podría llegar a 189.000 € si el mercado acompaña. Con esa venta, se recupera todo el dinero puesto y el beneficio que sobra se reparte: <strong>34 % para McVeras</strong>, que gestiona toda la operación, y <strong>66 % para los inversores</strong>, en proporción a lo que haya puesto cada uno.</p>
+  <p>Si en algún momento hiciera falta algo más de dinero del previsto, ese extra lo adelanta <strong>McVeras</strong>, no los inversores. La aportación total de los inversores se queda en los <strong>80.000 €</strong> pactados.</p>
+  <div class="rule"></div>
+</section>
+
+<section id="calc-section">
+  <div class="num">03 · Qué te llega a ti</div>
+  <h2>Muévelo y compruébalo</h2>
+  <p>Ajusta cuánto pones y a qué precio se vende la casa. Los números se recalculan al momento.</p>
+
+  <div class="calc">
+    <div class="field">
+      <div class="field-head">
+        <span class="field-lab">Tú aportas</span>
+        <span class="field-val" id="apVal">40.000 €</span>
+      </div>
+      <input type="range" id="apSlider" min="10000" max="80000" step="1000" value="40000" aria-label="Tu aportación">
+      <div class="scale"><span>10.000</span><span>80.000</span></div>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <span class="field-lab">Precio de venta</span>
+        <span class="field-val" id="pVal">160.000 €</span>
+      </div>
+      <input type="range" id="pSlider" min="80000" max="200000" step="1000" value="160000" aria-label="Precio de venta">
+      <div class="scale"><span>80.000</span><span>140.000</span><span>200.000</span></div>
+    </div>
+
+    <div class="readout">
+      <table class="rows">
+        <tr><td>Recuperas lo que pusiste</td><td id="rowPuesto">40.000 €</td></tr>
+        <tr><td>Más tu parte del beneficio</td><td id="rowBeneficio">21.856 €</td></tr>
+        <tr class="pct"><td>Rentabilidad bruta</td><td id="rowPct">54,6 %</td></tr>
+        <tr class="hi"><td>Total que te llega</td><td id="rowTotal">61.856 €</td></tr>
+      </table>
+      <div class="flag" id="flag"><b>Por encima del punto muerto.</b> Recuperas tu aportación íntegra y cobras tu parte del beneficio.</div>
+    </div>
+
+    <div class="anual">
+      <div class="anual-lab">Rentabilidad anualizada, según cuánto tarde en venderse</div>
+      <div class="anual-grid">
+        <div class="acell"><dt>6 meses</dt><dd id="a6">124,6 %</dd></div>
+        <div class="acell"><dt>12 meses</dt><dd id="a12">54,6 %</dd></div>
+        <div class="acell"><dt>18 meses</dt><dd id="a18">33,7 %</dd></div>
+      </div>
+      <p class="anual-note">Si la venta se cierra antes, la misma ganancia rinde más al año. Si tarda más, rinde menos. El dinero ganado no cambia — cambia cuánto tiempo ha estado trabajando.</p>
+    </div>
+  </div>
+
+  <p class="quote">Tu porcentaje sobre el beneficio sale de cuánto pones: <b>66 % × (tu aportación ÷ 80.000 €)</b>. Si pusieras más o menos, tu porcentaje cambiaría, pero tu rentabilidad por cada euro puesto sería siempre la misma.</p>
+</section>
+
+<footer>
+  <p>McVeras S.L. · CIF B05393699 · Vitoria-Gasteiz<br>Documento explicativo. Las cifras son estimaciones y pueden variar según las condiciones finales de la operación.</p>
+</footer>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+  var CAP_TOTAL = 80000;
+  var COSTE = 82994;              // compra + reforma + tenencia (coste real de la operación)
+  var COM = 0.03, IVA = 1.21;
+  var FIJOS = 500*IVA + 300*IVA + 3000 + 1000;
+
+  var eur = { format: function(n){
+    n = Math.round(n);
+    var s = Math.abs(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    return (n < 0 ? '-' : '') + s;
+  }};
+  var pct = { format: function(n){
+    return n.toFixed(1).replace('.', ',');
+  }};
+
+  var apSlider = document.getElementById('apSlider');
+  var pSlider  = document.getElementById('pSlider');
+  var apVal = document.getElementById('apVal');
+  var pVal  = document.getElementById('pVal');
+  var rowPuesto = document.getElementById('rowPuesto');
+  var rowBeneficio = document.getElementById('rowBeneficio');
+  var rowPct = document.getElementById('rowPct');
+  var rowTotal = document.getElementById('rowTotal');
+  var flag = document.getElementById('flag');
+  var a6 = document.getElementById('a6');
+  var a12 = document.getElementById('a12');
+  var a18 = document.getElementById('a18');
+
+  function calc(){
+    var ap = Number(apSlider.value);
+    var p  = Number(pSlider.value);
+
+    var gastosVenta = p*COM*IVA + FIJOS;
+    var beneficioTotal = p - gastosVenta - COSTE;
+    var tuParte = 0.66 * (ap / CAP_TOTAL);
+    var tuBeneficio = beneficioTotal * tuParte;
+    var r = tuBeneficio / ap;
+    var total = ap + tuBeneficio;
+
+    apVal.textContent = eur.format(ap) + ' €';
+    pVal.textContent  = eur.format(p) + ' €';
+    rowPuesto.textContent = eur.format(ap) + ' €';
+    rowBeneficio.textContent = (tuBeneficio<0?'−':'') + eur.format(Math.round(Math.abs(tuBeneficio))) + ' €';
+    rowPct.textContent = (r<0?'−':'') + pct.format(Math.abs(r)*100) + ' %';
+    rowTotal.textContent = eur.format(Math.round(Math.max(0,total))) + ' €';
+
+    if (r >= 0){
+      flag.className = 'flag';
+      flag.innerHTML = '<b>Por encima del punto muerto.</b> Recuperas tu aportación íntegra y cobras tu parte del beneficio.';
+      a6.textContent  = pct.format((Math.pow(1+r,2)-1)*100) + ' %';
+      a12.textContent = pct.format(r*100) + ' %';
+      a18.textContent = pct.format((Math.pow(1+r,2/3)-1)*100) + ' %';
+    } else {
+      flag.className = 'flag warn';
+      flag.innerHTML = '<b>Por debajo del punto muerto.</b> Recuperarías ' + eur.format(Math.round(Math.max(0,total))) + ' € de los ' + eur.format(ap) + ' € puestos. La pérdida nunca supera tu aportación.';
+      a6.textContent = '—'; a12.textContent = '—'; a18.textContent = '—';
+    }
+  }
+
+  apSlider.addEventListener('input', calc);
+  pSlider.addEventListener('input', calc);
+  calc();
+})();
+</script>
+</body>
+</html>
