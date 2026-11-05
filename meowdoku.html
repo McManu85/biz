@@ -177,25 +177,57 @@ function genRegions(n,sol){
   }
   return g;
 }
-function countSolutions(n,g,limit=2){
-  let count=0;const colU=new Array(n).fill(false),regU=new Array(n).fill(false);
-  function go(r,prev){
-    if(count>=limit)return;
-    if(r===n){count++;return}
+function findSolutions(n,g,limit=2){
+  const out=[],p=[],colU=new Array(n).fill(false),regU=new Array(n).fill(false);
+  function go(r){
+    if(out.length>=limit)return;
+    if(r===n){out.push(p.slice());return}
     for(let c=0;c<n;c++){
       if(colU[c]||regU[g[r][c]])continue;
-      if(r>0&&Math.abs(c-prev)<=1)continue;
-      colU[c]=regU[g[r][c]]=true;go(r+1,c);colU[c]=regU[g[r][c]]=false;
+      if(r>0&&Math.abs(c-p[r-1])<=1)continue;
+      colU[c]=regU[g[r][c]]=true;p[r]=c;go(r+1);colU[c]=regU[g[r][c]]=false;
     }
   }
-  go(0,-9);return count;
+  go(0);return out;
+}
+function countSolutions(n,g,limit=2){return findSolutions(n,g,limit).length}
+function connectedWithout(n,g,reg,r0,c0,seed){
+  // is region reg still connected if (r0,c0) leaves it?
+  const seen=new Set([seed[0]*n+seed[1]]),st=[seed];let cnt=1,tot=0;
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(g[r][c]===reg&&!(r===r0&&c===c0))tot++;
+  while(st.length){const[r,c]=st.pop();
+    for(const[dr,dc]of[[1,0],[-1,0],[0,1],[0,-1]]){const rr=r+dr,cc=c+dc;
+      if(rr<0||rr>=n||cc<0||cc>=n||(rr===r0&&cc===c0)||g[rr][cc]!==reg)continue;
+      const k=rr*n+cc;if(seen.has(k))continue;seen.add(k);cnt++;st.push([rr,cc]);}}
+  return cnt===tot;
 }
 function generate(n){
-  for(let a=0;a<400;a++){
-    const sol=genPerm(n);
-    for(let b=0;b<25;b++){
-      const g=genRegions(n,sol);
-      if(countSolutions(n,g)===1)return{sol,g};
+  const D=[[1,0],[-1,0],[0,1],[0,-1]];
+  for(let attempt=0;attempt<500;attempt++){
+    const sol=genPerm(n),g=genRegions(n,sol);
+    for(let it=0;it<400;it++){
+      const s=findSolutions(n,g,2);
+      if(s.length===1)return{sol:s[0],g};
+      const alt=s.find(x=>x.some((c,r)=>c!==sol[r]));
+      const cells=shuffle(alt.map((c,r)=>[r,c]).filter(([r,c])=>sol[r]!==c));
+      let moved=false;
+      for(const[r,c]of cells){
+        const reg=g[r][c];
+        const nbr=shuffle(D.map(([dr,dc])=>[r+dr,c+dc]).filter(([rr,cc])=>rr>=0&&rr<n&&cc>=0&&cc<n&&g[rr][cc]!==reg));
+        if(!nbr.length)continue;
+        if(!connectedWithout(n,g,reg,r,c,(()=>{const sr=sol.findIndex((cc,rr)=>g[rr][cc]===reg);return[sr,sol[sr]]})()))continue;
+        const[rr,cc]=nbr[0];g[r][c]=g[rr][cc];moved=true;break;
+      }
+      if(!moved){ // mover una casilla frontera cualquiera
+        const all=[];for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(sol[r]!==c)all.push([r,c]);
+        for(const[r,c]of shuffle(all)){const reg=g[r][c];
+          const nb=D.map(([dr,dc])=>[r+dr,c+dc]).filter(([rr,cc])=>rr>=0&&rr<n&&cc>=0&&cc<n&&g[rr][cc]!==reg);
+          if(!nb.length)continue;
+          const sr=sol.findIndex((cc,rr)=>g[rr][cc]===reg);
+          if(!connectedWithout(n,g,reg,r,c,[sr,sol[sr]]))continue;
+          const[rr,cc]=nb[rnd(nb.length)];g[r][c]=g[rr][cc];moved=true;break;}
+        if(!moved)break;
+      }
     }
   }
   const sol=genPerm(n);return{sol,g:genRegions(n,sol)};
