@@ -76,6 +76,14 @@ label.toggle{display:flex;align-items:center;gap:6px;font-size:.92rem;color:var(
 .rules{font-size:.92rem;color:var(--muted);line-height:1.5;margin:0}
 .rules b{color:var(--ink)}
 .best{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.idrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.idrow code{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:1rem;font-weight:700;letter-spacing:.06em;background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:4px 10px;user-select:all;-webkit-user-select:all}
+.idlabel{font-size:.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.btn.sm{padding:4px 10px;font-size:.88rem}
+#loadf{display:flex;gap:6px;margin-left:auto}
+#idin{width:8.5em;font:600 1rem ui-monospace,"SF Mono",Menlo,Consolas,monospace;text-transform:uppercase;border:2px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--surface);color:var(--ink)}
+#idmsg{margin:0}
+#idmsg.err{color:var(--bad)}
 </style>
 <style>*{box-sizing:border-box}body{margin:0;font-size:14px}[hidden]{display:none!important}img{max-width:100%}</style>
 </head>
@@ -98,8 +106,19 @@ label.toggle{display:flex;align-items:center;gap:6px;font-size:.92rem;color:var(
       <button class="chip" id="s9" data-n="9">9×9</button>
     </div>
     <span class="spacer"></span>
-    <span class="best" id="best"></span><span class="best">v2</span>
+    <span class="best" id="best"></span><span class="best">v4</span>
   </div>
+
+  <div class="idrow">
+    <span class="idlabel">Partida</span>
+    <code id="gid"></code>
+    <button class="btn sm" id="copy" type="button">Copiar</button>
+    <form id="loadf" autocomplete="off">
+      <input id="idin" placeholder="7-ABC123" aria-label="ID de partida para cargar" maxlength="12">
+      <button class="btn sm" type="submit">Cargar</button>
+    </form>
+  </div>
+  <p class="best" id="idmsg" hidden></p>
 
   <div class="boardbox">
     <div class="board" id="board" role="grid" aria-label="Tablero"></div>
@@ -138,7 +157,13 @@ const HEART=`<svg class="heart" viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6
 let S; // state
 let timerId=null;
 
-function rnd(n){return Math.floor(Math.random()*n)}
+const ALPH='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+let rand=Math.random;
+function seedFrom(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19}h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return(h^h>>>16)>>>0}
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function newCode(){let s='';for(let i=0;i<6;i++)s+=ALPH[Math.floor(Math.random()*ALPH.length)];return s}
+function parseId(v){const m=String(v||'').trim().toUpperCase().replace(/^#/,'').match(/^([6-9])-?([A-Z0-9]{4,10})$/);return m?{n:+m[1],code:m[2]}:null}
+function rnd(n){return Math.floor(rand()*n)}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 
 function genPerm(n){
@@ -171,7 +196,7 @@ function genRegions(n,sol){
         if(rr>=0&&rr<n&&cc>=0&&cc<n&&g[rr][cc]!==-1)cands.push([r,c,g[rr][cc]]);}
     }
     let tot=0;const w=cands.map(x=>{const v=1/Math.pow(size[x[2]],1.4);tot+=v;return v});
-    let t=Math.random()*tot,i=0;while(t>w[i]){t-=w[i];i++}
+    let t=rand()*tot,i=0;while(t>w[i]){t-=w[i];i++}
     const[r,c,reg]=cands[Math.min(i,cands.length-1)];
     g[r][c]=reg;size[reg]++;left--;
   }
@@ -233,11 +258,20 @@ function generate(n){
   const sol=genPerm(n);return{sol,g:genRegions(n,sol)};
 }
 
-function newGame(n){
+function newGame(n,code){
+  code=code||newCode();
+  rand=mulberry(seedFrom(n+'-'+code));
   const{sol,g}=generate(n);
-  S={n,sol,g,cell:Array.from({length:n},()=>new Array(n).fill(0)),hearts:3,hist:[],start:Date.now(),elapsed:0,over:false};
-  render();startTimer();
+  rand=Math.random;
+  S={n,id:n+'-'+code,sol,g,cell:Array.from({length:n},()=>new Array(n).fill(0)),hearts:3,hist:[],start:Date.now(),elapsed:0,over:false};
+  render();startTimer();showId();
 }
+function showId(){
+  $('gid').textContent=S.id;
+  try{if(location.hash.slice(1)!==S.id)history.replaceState(null,'','#'+S.id)}catch(e){}
+}
+function flash(msg,err){const m=$('idmsg');m.textContent=msg;m.classList.toggle('err',!!err);m.hidden=false;clearTimeout(flash.t);flash.t=setTimeout(()=>m.hidden=true,3500)}
+function loadId(v){const p=parseId(v);if(!p){flash('ID no válido. Formato: tamaño-código, por ejemplo 7-K3F9Q2.',true);return false}newGame(p.n,p.code);flash('Partida '+S.id+' cargada.');return true}
 function restart(){
   S.cell=Array.from({length:S.n},()=>new Array(S.n).fill(0));
   S.hearts=3;S.hist=[];S.start=Date.now();S.elapsed=0;S.over=false;render();startTimer();
@@ -299,6 +333,7 @@ function placeCat(r,c){
   if(S.over)return;
   const v=S.cell[r][c];
   if(v===2)return;
+  if(v===1){flash('Casilla tachada: quita la ✕ en modo Marca para poner un gato ahí.');return}
   if(S.sol[r]!==c){
     snapshot();
     S.hearts--;S.cell[r][c]=1;drawCells();drawHearts();
@@ -330,7 +365,7 @@ function checkWin(){
   if(k===S.n){
     S.over=true;S.elapsed=Date.now()-S.start;drawTimer();clearInterval(timerId);
     const b=getBest();const rec=!b||S.elapsed<b;if(rec)setBest(S.elapsed);drawBest();
-    showOverlay('¡Miau! Resuelto',`${fmt(S.elapsed)} con ${S.hearts} ${S.hearts===1?'vida':'vidas'}${rec?' · nuevo récord':''}`);
+    showOverlay('¡Miau! Resuelto',`Partida ${S.id} · ${fmt(S.elapsed)} con ${S.hearts} ${S.hearts===1?'vida':'vidas'}${rec?' · nuevo récord':''}`);
   }
 }
 function lose(){
@@ -385,11 +420,17 @@ boardEl.addEventListener('keydown',e=>{
 
 document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>newGame(+ch.dataset.n));
 $('undo').onclick=undo;$('restart').onclick=restart;
-$('newg').onclick=()=>newGame(S.n);$('ovBtn').onclick=()=>newGame(S.n);
+$('newg').onclick=()=>newGame(S.n);
+$('loadf').addEventListener('submit',e=>{e.preventDefault();if(loadId($('idin').value)){$('idin').value='';$('idin').blur()}});
+$('copy').onclick=()=>{const t=S.id;const ok=()=>flash('ID copiado: '+t+'. Pásaselo a quien quieras.');
+  try{navigator.clipboard.writeText(t).then(ok,()=>{selId();flash('Mantén pulsado el ID para copiarlo.')})}catch(e){selId();flash('Mantén pulsado el ID para copiarlo.')}};
+function selId(){try{const r=document.createRange();r.selectNodeContents($('gid'));const s=getSelection();s.removeAllRanges();s.addRange(r)}catch(e){}}
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h&&h!==S.id)loadId(h)});$('ovBtn').onclick=()=>newGame(S.n);
 
 function boot(d){
-  if(d&&d.S){S=d.S;S.start=Date.now()-S.elapsed;render();if(!S.over)startTimer()}
-  else newGame(7);
+  if(d&&d.S&&d.S.id){S=d.S;S.start=Date.now()-S.elapsed;render();showId();if(!S.over)startTimer();return}
+  const p=parseId(location.hash);
+  if(p)newGame(p.n,p.code);else newGame(7);
 }
 window.claude?.hot?.snapshot?.(()=>({S}));
 window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
